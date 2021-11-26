@@ -1,3 +1,4 @@
+from graph_tools import Graph, Node
 # A* search
 def astar_search(graph, heuristics, start, end):
     
