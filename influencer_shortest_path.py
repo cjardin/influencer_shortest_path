@@ -95,7 +95,7 @@ def main():
         if len(graph.get(test_vertex)) < INF_MIN_NODE_DEGREE:
             random_start_vertex = test_vertex
 
-    print("Starting Vertex -> " + random_start_vertex) 
+    print(f"Starting Vertex -> {random_start_vertex} with node degree of {len(graph.get(random_start_vertex))}") 
 
     #walked the ranked, node degree list from highest node degree to least
     distance_to_max_influencer = None
