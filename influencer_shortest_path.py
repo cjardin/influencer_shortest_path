@@ -10,7 +10,7 @@ def main():
     graph = Graph()
 
     #Total number of nodes we are going to create
-    TOTAL_POPULATION = 500 
+    TOTAL_POPULATION = 500
 
     #The number of "friends" a non-influencer has
     NORMAL_MAX_NODE_DEGREE = 50
@@ -101,10 +101,11 @@ def main():
     distance_to_max_influencer = None
     for vertex in ranked:
 
+        print(f"Test {vertex} with node degree of {len(graph.get(vertex))}")
+
         #skip ourself 
         if vertex == random_start_vertex:
             continue
-
         
         path = astar_search(graph, heuristics, random_start_vertex , vertex)
         #path example = ['BAXTER_BRADY: 0', 'MCDANIEL_JACOBS: 1', 'MOSES_MOYER: 2']
