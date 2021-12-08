@@ -6,60 +6,65 @@ GREY = Working on it
 Black = None
 """
 
-graph = {'B': {"color" : "WHITE" , "location" : 0 , "vertices" : ['A', 'C']},
-        'A': {"color" : "WHITE" , "location" : 1 , "vertices" : ['B', 'C', 'D']},
-        'C': {"color" : "WHITE" , "location" : 2 , "vertices" : ['B', 'A', 'D', 'E']},
-        'D': {"color" : "WHITE" , "location" : 3 , "vertices" : ['A', 'F', 'C', 'E']},
-        'E': {"color" : "WHITE" , "location" : 4 , "vertices" : ['C', 'D']},
-        'F': {"color" : "WHITE" , "location" : 5 , "vertices" : ['D', 'G', 'C']},
-        'G': {"color" : "WHITE" , "location" : 6 , "vertices" : ['F']}
+graph = {'B': {"color" : "WHITE" , "interval" : 0 , "vertices" : ['A', 'C']},
+        'A': {"color" : "WHITE" , "interval" : 1 , "vertices" : ['B', 'C', 'D']},
+        'C': {"color" : "WHITE" , "interval" : 2 , "vertices" : ['B', 'A', 'D', 'E']},
+        'D': {"color" : "WHITE" , "interval" : 3 , "vertices" : ['A', 'F', 'C', 'E']},
+        'E': {"color" : "WHITE" , "interval" : 4 , "vertices" : ['C', 'D']},
+        'F': {"color" : "WHITE" , "interval" : 5 , "vertices" : ['D', 'G', 'C']},
+        'G': {"color" : "WHITE" , "interval" : 6 , "vertices" : ['F']}
         }
 
 
 #Sort the nodes by location on the timeline
-sorted_nodes = {k: v for k, v in sorted(graph.items(), key=lambda item: -item[1]['location'])}
+sorted_nodes = {k: v for k, v in sorted(graph.items(), key=lambda item: item[1]['interval'])}
 
-print(sorted_nodes)
-sys.exit()
+def interval_coloring(G):
+    #sort the graph.. Assume merge stort = O(n log n)
+    sorted_nodes = {k: v for k, v in sorted(graph.items(), key=lambda item: item[1]['interval'])}
+    
+    #Get the maximum ...Theory is.. If we walk the interval from start to finish.. we are done!
+    max_interval_node = sorted_nodes[list(sorted_nodes.keys())[-1]]
 
+    #loop through all 
+    for node in sorted_nodes:
+        result =  interval_rec_coloring(G, node)
+        print(result)
+        if result['max_interval'] >= max_interval_node['interval']:
+            break
 
+    return sorted_nodes
         
 
-def outerplanr_coloring(G, start):
+def interval_rec_coloring(G, start):
 
     G[start]['color'] = "GREY"
 
     colors_taken = []
+    max_interval = G[start]['interval']
     for v in  G[start]['vertices'] :
         if G[v]['color'] == "WHITE":
-            node_color =  outerplanr_coloring(G, v)
-           
-            #did we find out that we are not outerplanr?
-            if node_color == 0:
-                return 0
+            result = interval_rec_coloring(G, v)
+            node_color =  result['node_color']
+            if result['max_interval'] > max_interval:
+                max_interval = result['max_interval']
             colors_taken.append( node_color )
         else:
             colors_taken.append( G[v]['color'] )
 
     my_color = None
-    #At max 3 color outerplanr
-    for i in range(1,4): # 3 color, offset by 1 so 0 = error
+    for i in range( len(G) ): #MAX node Deg is the total number of intervals 
         if i not in colors_taken:
             my_color = i
             break
 
-    #Not Outerplanr
-    if my_color == None:
-        return 0
-
     G[start]['color'] = my_color
-    return my_color
+    return { "node_color" : my_color, "max_interval" : max_interval}
         
 
 
-print( outerplanr_coloring(graph, "C") )
+pprint.pprint( interval_coloring(graph) )
 
-pprint.pprint(graph)
 
 
 
