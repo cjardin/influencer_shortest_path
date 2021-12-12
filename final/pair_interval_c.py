@@ -6,21 +6,23 @@ GREY = Working on it
 Black = None
 """
 
-intervals = [ {"Name" : "A", "start" : 0, "end" : 10, "color" : "WHITE"},
-              {"Name" : "B", "start" : 1, "end" : 3, "color" : "WHITE"},
-              {"Name" : "C", "start" : 2, "end" : 20, "color" : "WHITE"},
-              {"Name" : "D", "start" : 11, "end" : 18, "color" : "WHITE"},
-              {"Name" : "E", "start" : 12, "end" : 15,"color" : "WHITE"},
-              {"Name" : "F", "start" : 16, "end" : 23,"color" : "WHITE"},
-              {"Name" : "G","start" : 22, "end" : 25,"color" : "WHITE"}
+intervals = [ {"start" : 0, "end" : 10 },
+              {"start" : 1, "end" : 3},
+              {"start" : 2, "end" : 20},
+              {"start" : 9, "end" : 18},
+              {"start" : 12, "end" : 15},
+              {"start" : 16, "end" : 23},
+              {"start" : 22, "end" : 25}
             ]
+
+colors = {}
 
 
             
 
 def interval_rec_coloring(G, start):
 
-    G[start]['color'] = "GREY"
+    colors[start] = "GREY"
 
     colors_taken = []
     for v in  range( start, len(G) ):
@@ -28,12 +30,12 @@ def interval_rec_coloring(G, start):
         if G[start]['end'] <  G[v]['start']:
             break
 
-        if G[v]['color'] == "WHITE":
+        if v not in colors:
             result = interval_rec_coloring(G, v)
             node_color =  result['node_color']
             colors_taken.append( node_color )
         else:
-            colors_taken.append( G[v]['color'] )
+            colors_taken.append(  colors[v] )
 
     my_color = None
     for i in range( len(G) ): #MAX node Deg is the total number of intervals 
@@ -41,15 +43,16 @@ def interval_rec_coloring(G, start):
             my_color = i
             break
 
-    G[start]['color'] = my_color
+    colors[start] = my_color
     return { "node_color" : my_color}
 
+#Merge sort by start
 intervals.sort(key=lambda s: s['start'] )
-print( intervals )
 
-print( interval_rec_coloring(intervals, 0 ) )
-print( intervals )
+interval_rec_coloring(intervals, 0 ) 
 
+for i in range(len(intervals)):
+    print( intervals[i], colors[i] )
 
 
 
