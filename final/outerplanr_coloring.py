@@ -109,13 +109,14 @@ def outerplanr_coloring_2_g(G, start):
         
 
 
-#print( outerplanr_coloring(graph, "C") )
-
-print( outerplanr_coloring_2_g( bad_graph , "A") )
-pprint.pprint(bad_graph)
-
-print( outerplanr_coloring_2_g( graph , "A") )
+print( outerplanr_coloring(graph, "A") )
 pprint.pprint(graph)
+
+#print( outerplanr_coloring_2_g( bad_graph , "A") )
+#pprint.pprint(bad_graph)
+
+#print( outerplanr_coloring_2_g( graph , "A") )
+#pprint.pprint(graph)
 
 
 

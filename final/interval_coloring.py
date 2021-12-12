@@ -16,22 +16,27 @@ graph = {'B': {"color" : "WHITE" , "interval" : 0 , "vertices" : ['A', 'C']},
         }
 
 
-#Sort the nodes by location on the timeline
-sorted_nodes = {k: v for k, v in sorted(graph.items(), key=lambda item: item[1]['interval'])}
-
 def interval_coloring(G):
-    #sort the graph.. Assume merge stort = O(n log n)
+
+    #sort the graph.. Assume merge sort = O(n log n)
     sorted_nodes = {k: v for k, v in sorted(graph.items(), key=lambda item: item[1]['interval'])}
-    
+    print(sorted_nodes)
+
+    #Create Jump list for loop..
+    jump_list = {}
+    for s in sorted_nodes:
+        jump_list[ sorted_nodes[s]['interval'] ] = s
+
     #Get the maximum ...Theory is.. If we walk the interval from start to finish.. we are done!
     max_interval_node = sorted_nodes[list(sorted_nodes.keys())[-1]]
 
     #loop through all 
-    for node in sorted_nodes:
-        result =  interval_rec_coloring(G, node)
-        print(result)
-        if result['max_interval'] >= max_interval_node['interval']:
-            break
+    largest_visited_interval = sorted_nodes[list(sorted_nodes.keys())[0]]['interval']
+    while largest_visited_interval < max_interval_node['interval']:
+        node_index = jump_list[largest_visited_interval]
+
+        result =  interval_rec_coloring(G, node_index)
+        largest_visited_interval = result['max_interval']
 
     return sorted_nodes
         
@@ -63,7 +68,7 @@ def interval_rec_coloring(G, start):
         
 
 
-pprint.pprint( interval_coloring(graph) )
+print( interval_coloring(graph) )
 
 
 
