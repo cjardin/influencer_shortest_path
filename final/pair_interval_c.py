@@ -22,16 +22,14 @@ colors = {}
 
 def interval_rec_coloring(G, start):
 
-    colors[start] = "GREY"
-
     colors_taken = []
-    for v in  range( start, len(G) ):
+    for v in  range( start , len(G) ):
         #don't go further than the end of our interval
         if G[start]['end'] <  G[v]['start']:
             break
 
         if v not in colors:
-            result = interval_rec_coloring(G, v)
+            result = interval_rec_coloring(G, v + 1)
             node_color =  result['node_color']
             colors_taken.append( node_color )
         else:
