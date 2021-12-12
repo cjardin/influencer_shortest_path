@@ -20,13 +20,10 @@ def interval_rec_coloring(G, start):
     G[start]['color'] = "GREY"
 
     colors_taken = []
-    max_interval = G[start]['interval']
     for v in  G[start]['vertices'] :
         if G[v]['color'] == "WHITE":
             result = interval_rec_coloring(G, v)
             node_color =  result['node_color']
-            if result['max_interval'] > max_interval:
-                max_interval = result['max_interval']
             colors_taken.append( node_color )
         else:
             colors_taken.append( G[v]['color'] )
@@ -38,7 +35,7 @@ def interval_rec_coloring(G, start):
             break
 
     G[start]['color'] = my_color
-    return { "node_color" : my_color, "max_interval" : max_interval}
+    return { "node_color" : my_color}
         
 sorted_nodes = {k: v for k, v in sorted(graph.items(), key=lambda item: item[1]['interval'])}
 
