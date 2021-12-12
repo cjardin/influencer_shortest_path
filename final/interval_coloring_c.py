@@ -15,38 +15,6 @@ graph = {'B': {"color" : "WHITE" , "interval" : 0 , "vertices" : ['A', 'C']},
         'G': {"color" : "WHITE" , "interval" : 6 , "vertices" : ['F']}
         }
 
-
-def interval_coloring(G):
-
-    #sort the graph.. Assume merge sort = O(n log n)
-    sorted_nodes = {k: v for k, v in sorted(graph.items(), key=lambda item: item[1]['interval'])}
-    print(sorted_nodes)
-
-    jump_list = {}
-    for s in sorted_nodes:
-        jump_list[ sorted_nodes[s]['interval'] ] = s
-
-    #Get the maximum ...Theory is.. If we walk the interval from start to finish.. we are done!
-    max_interval_node = sorted_nodes[list(sorted_nodes.keys())[-1]]
-
-    #loop through all 
-    largest_visited_interval = sorted_nodes[list(sorted_nodes.keys())[0]]['interval']
-    while largest_visited_interval < max_interval_node['interval']:
-        node_index = jump_list[largest_visited_interval]
-
-        result =  interval_rec_coloring(G, node_index)
-        largest_visited_interval = result['max_interval']
-        #goto next
-        next_index_to_visit =  list(sorted_nodes.keys()).index(jump_list[largest_visited_interval]) + 1
-        if next_index_to_visit > len( sorted_nodes ):
-            break
-        next_index_to_visit = list(sorted_nodes.keys())[next_index_to_visit]
-        largest_visited_interval = sorted_nodes.index(jump_list[largest_visited_interval])
-        
-
-    return sorted_nodes
-        
-
 def interval_rec_coloring(G, start):
 
     G[start]['color'] = "GREY"
@@ -72,9 +40,10 @@ def interval_rec_coloring(G, start):
     G[start]['color'] = my_color
     return { "node_color" : my_color, "max_interval" : max_interval}
         
+sorted_nodes = {k: v for k, v in sorted(graph.items(), key=lambda item: item[1]['interval'])}
 
-
-print( interval_coloring(graph) )
+print( interval_rec_coloring(sorted_nodes, list(sorted_nodes.keys())[0]) )
+print( sorted_nodes)
 
 
 
